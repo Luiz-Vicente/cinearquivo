@@ -1,0 +1,126 @@
+{
+  "brand": {
+    "tagline": "Public domain classics, free and ad-free. Grab the popcorn."
+  },
+  "seo": {
+    "homeDescription": "Watch thousands of public domain classic films, straight from the Internet Archive, with no ads."
+  },
+  "nav": {
+    "main": "Main navigation",
+    "home": "Home",
+    "movies": "Features",
+    "shorts": "Shorts",
+    "decades": "Decades",
+    "myList": "My list",
+    "search": "Search"
+  },
+  "actions": {
+    "play": "Play",
+    "resume": "Resume",
+    "moreInfo": "More info",
+    "addToList": "Add to my list",
+    "removeFromList": "Remove from my list",
+    "removeFromHistory": "Remove from Continue Watching",
+    "seeAll": "See all",
+    "loadMore": "Load more",
+    "back": "Back",
+    "close": "Close",
+    "clear": "Clear",
+    "browse": "Browse films",
+    "scrollLeft": "Scroll left",
+    "scrollRight": "Scroll right",
+    "retry": "Try again"
+  },
+  "rows": {
+    "continueWatching": "Continue watching",
+    "myList": "My list",
+    "featured": "Famous classics",
+    "shorts": "Short films",
+    "decade": "The {decade}s"
+  },
+  "meta": {
+    "rating": "Rated {score} out of 10",
+    "short": "Short",
+    "publicDomain": "Public domain",
+    "decade": "The {decade}s",
+    "directedBy": "Directed by {name}",
+    "watched": "{percent}% watched"
+  },
+  "sort": {
+    "popular": "Best known",
+    "oldest": "Oldest",
+    "newest": "Newest",
+    "rating": "Top rated"
+  },
+  "catalog": {
+    "moviesTitle": "Features",
+    "moviesDescription": "Public domain feature films, from the silent era to Hollywood classics.",
+    "shortsTitle": "Shorts",
+    "shortsDescription": "Chaplin, Keaton, Méliès, cartoons and other gems under 40 minutes.",
+    "decadesTitle": "Decades",
+    "decadesDescription": "Travel through film history, one decade at a time.",
+    "genres": "Genres",
+    "decades": "Decades",
+    "allGenres": "All",
+    "allDecades": "All",
+    "sortBy": "Sort by",
+    "count": "{n} film | {n} films",
+    "empty": "No films match these filters",
+    "emptyHint": "Try another genre or decade."
+  },
+  "decades": {
+    "d1890": "Cinema's first steps: the Lumière brothers and the first screenings.",
+    "d1900": "Méliès, camera tricks and the first stories told on film.",
+    "d1910": "Film learns to tell stories: Griffith, serials and the first stars.",
+    "d1920": "The height of silent film: Chaplin, Keaton, German expressionism and the Soviet avant-garde.",
+    "d1930": "Sound arrives: musicals, screwball comedies and the classic monsters.",
+    "d1940": "Film noir, war pictures and big studio productions.",
+    "d1950": "Science fiction, B horror and drive-in cinema.",
+    "d1960": "New winds: independent film, horror and experimentation.",
+    "d1970": "Independent productions and rarities that fell into the public domain."
+  },
+  "details": {
+    "directors": "Directed by",
+    "cast": "Cast",
+    "genres": "Genres",
+    "originalTitle": "Original title",
+    "source": "Source",
+    "similar": "You may also like",
+    "noOverview": "No synopsis available.",
+    "notFound": "Film not found."
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Titles, directors…",
+    "resultsFor": "Results for “{query}”",
+    "noResults": "Nothing found for “{query}”",
+    "noResultsHint": "Try another title, the original title or the director's name.",
+    "discover": "The best known in the collection"
+  },
+  "myList": {
+    "title": "My list",
+    "empty": "Your list is empty",
+    "emptyHint": "Add films to watch later. They are saved in this browser."
+  },
+  "watch": {
+    "loading": "Loading film…",
+    "playerTitle": "{title} player",
+    "source": "Source: Internet Archive",
+    "unavailable": "Could not load the film",
+    "unavailableHint": "The Internet Archive file did not respond. Try again later or watch it on their site.",
+    "openOnArchive": "Open on the Internet Archive",
+    "slow": "The Internet Archive is taking a while to respond…"
+  },
+  "footer": {
+    "language": "Language",
+    "archiveNotice": "Films stream from the Internet Archive and are in the public domain according to Wikidata or by age (released up to {year}, in the US).",
+    "tmdbNotice": "This product uses the TMDB API but is not endorsed or certified by TMDB.",
+    "rights": "Personal, non-commercial project."
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "notFound": "Page not found",
+    "generic": "Please try again in a moment.",
+    "home": "Back to home"
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "brand": {
+    "tagline": "Clássicos em domínio público, de graça e sem anúncios. Pegue a pipoca."
+  },
+  "seo": {
+    "homeDescription": "Assista a milhares de filmes clássicos em domínio público, direto do Internet Archive, sem anúncios."
+  },
+  "nav": {
+    "main": "Navegação principal",
+    "home": "Início",
+    "movies": "Longas",
+    "shorts": "Curtas",
+    "decades": "Décadas",
+    "myList": "Minha lista",
+    "search": "Buscar"
+  },
+  "actions": {
+    "play": "Assistir",
+    "resume": "Continuar",
+    "moreInfo": "Mais informações",
+    "addToList": "Adicionar à minha lista",
+    "removeFromList": "Remover da minha lista",
+    "removeFromHistory": "Remover de Continuar assistindo",
+    "seeAll": "Ver tudo",
+    "loadMore": "Carregar mais",
+    "back": "Voltar",
+    "close": "Fechar",
+    "clear": "Limpar",
+    "browse": "Explorar filmes",
+    "scrollLeft": "Rolar para a esquerda",
+    "scrollRight": "Rolar para a direita",
+    "retry": "Tentar de novo"
+  },
+  "rows": {
+    "continueWatching": "Continuar assistindo",
+    "myList": "Minha lista",
+    "featured": "Clássicos famosos",
+    "shorts": "Curtas-metragens",
+    "decade": "Anos {decade}"
+  },
+  "meta": {
+    "rating": "Nota {score} de 10",
+    "short": "Curta",
+    "publicDomain": "Domínio público",
+    "decade": "Anos {decade}",
+    "directedBy": "Direção de {name}",
+    "watched": "{percent}% assistido"
+  },
+  "sort": {
+    "popular": "Mais conhecidos",
+    "oldest": "Mais antigos",
+    "newest": "Mais recentes",
+    "rating": "Mais bem avaliados"
+  },
+  "catalog": {
+    "moviesTitle": "Longas",
+    "moviesDescription": "Longas-metragens em domínio público, do cinema mudo aos clássicos de Hollywood.",
+    "shortsTitle": "Curtas",
+    "shortsDescription": "Chaplin, Keaton, Méliès, desenhos animados e outras pérolas com menos de 40 minutos.",
+    "decadesTitle": "Décadas",
+    "decadesDescription": "Viaje pela história do cinema, uma década de cada vez.",
+    "genres": "Gêneros",
+    "decades": "Décadas",
+    "allGenres": "Todos",
+    "allDecades": "Todas",
+    "sortBy": "Ordenar por",
+    "count": "{n} filme | {n} filmes",
+    "empty": "Nenhum filme com esses filtros",
+    "emptyHint": "Tente outro gênero ou década."
+  },
+  "decades": {
+    "d1890": "Os primeiros passos do cinema: os irmãos Lumière e as primeiras exibições.",
+    "d1900": "Méliès, truques de câmera e as primeiras histórias contadas em filme.",
+    "d1910": "O cinema aprende a narrar: Griffith, os seriados e as primeiras estrelas.",
+    "d1920": "O auge do cinema mudo: Chaplin, Keaton, o expressionismo alemão e a vanguarda soviética.",
+    "d1930": "Chega o som: musicais, comédias malucas e os monstros clássicos.",
+    "d1940": "Filme noir, filmes de guerra e as grandes produções dos estúdios.",
+    "d1950": "Ficção científica, terror B e o cinema dos drive-ins.",
+    "d1960": "Novos ventos: cinema independente, terror e experimentação.",
+    "d1970": "Produções independentes e raridades que caíram em domínio público."
+  },
+  "details": {
+    "directors": "Direção",
+    "cast": "Elenco",
+    "genres": "Gêneros",
+    "originalTitle": "Título original",
+    "source": "Fonte",
+    "similar": "Você também pode gostar",
+    "noOverview": "Sinopse indisponível.",
+    "notFound": "Filme não encontrado."
+  },
+  "search": {
+    "title": "Buscar",
+    "placeholder": "Títulos, diretores…",
+    "resultsFor": "Resultados para “{query}”",
+    "noResults": "Nada encontrado para “{query}”",
+    "noResultsHint": "Tente outro título, o título original ou o nome do diretor.",
+    "discover": "Os mais conhecidos do acervo"
+  },
+  "myList": {
+    "title": "Minha lista",
+    "empty": "Sua lista está vazia",
+    "emptyHint": "Adicione filmes para assistir depois. Eles ficam salvos neste navegador."
+  },
+  "watch": {
+    "loading": "Carregando filme…",
+    "playerTitle": "Player de {title}",
+    "source": "Fonte: Internet Archive",
+    "unavailable": "Não foi possível carregar o filme",
+    "unavailableHint": "O arquivo do Internet Archive não respondeu. Tente de novo mais tarde ou assista direto no site deles.",
+    "openOnArchive": "Abrir no Internet Archive",
+    "slow": "O Internet Archive está demorando para responder…"
+  },
+  "footer": {
+    "language": "Idioma",
+    "archiveNotice": "Os filmes são transmitidos do Internet Archive e estão em domínio público segundo o Wikidata ou pela idade (lançados até {year}, nos EUA).",
+    "tmdbNotice": "Este produto usa a API do TMDB, mas não é endossado ou certificado pelo TMDB.",
+    "rights": "Projeto pessoal, sem fins comerciais."
+  },
+  "errors": {
+    "title": "Algo deu errado",
+    "notFound": "Página não encontrada",
+    "generic": "Tente novamente em instantes.",
+    "home": "Voltar ao início"
+  }
+}
