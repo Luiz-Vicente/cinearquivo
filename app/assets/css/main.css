@@ -1,0 +1,145 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+ * CineArquivo design tokens: a popcorn stand.
+ * Popcorn red #C8102E · cherry #8E0F1F · cream #FBF3E4 · straw #F3E3C3 ·
+ * butter #F2C14E · ink #2A1A14
+ * ------------------------------------------------------------------------- */
+@theme {
+  /* Brand palette */
+  --color-popcorn: #c8102e;
+  --color-cherry: #8e0f1f;
+  --color-cream: #fbf3e4;
+  --color-straw: #f3e3c3;
+  --color-straw-200: #e9d3a6;
+  --color-straw-300: #d9bc85;
+  --color-butter: #f2c14e;
+  --color-ink: #2a1a14;
+  --color-ink-muted: #6e5a4e;
+  --color-ink-subtle: #9a8576;
+  --color-paper: #fffdf8;
+
+  /* Semantic aliases: components use these, never raw hex values */
+  --color-bg: var(--color-cream);
+  --color-surface: var(--color-paper);
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: var(--color-straw);
+  --color-border: rgb(42 26 20 / 0.12);
+  --color-border-strong: rgb(42 26 20 / 0.28);
+  --color-text: var(--color-ink);
+  --color-text-muted: var(--color-ink-muted);
+  --color-text-subtle: var(--color-ink-subtle);
+  --color-accent: var(--color-popcorn);
+  --color-accent-hover: var(--color-cherry);
+  --color-on-accent: #ffffff;
+  --color-highlight: var(--color-butter);
+  --color-player: #120a08;
+  --color-on-player: var(--color-straw);
+
+  /* Typography */
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bebas Neue', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+
+  /* Elevation */
+  --shadow-pop-sm: 0 6px 18px -8px rgb(200 16 46 / 0.55);
+  --shadow-pop: 0 0 0 2px var(--color-popcorn), 0 18px 40px -18px rgb(200 16 46 / 0.6);
+  --shadow-card: 0 14px 34px -20px rgb(42 26 20 / 0.55);
+
+  /* Motion */
+  --ease-snappy: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-fade-in: fade-in 0.35s var(--ease-snappy) both;
+  --animate-rise-in: rise-in 0.4s var(--ease-snappy) both;
+
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes rise-in {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* Red and white popcorn box stripes. */
+@utility stripes {
+  background-image: repeating-linear-gradient(90deg, var(--color-popcorn) 0 1.25rem, #ffffff 1.25rem 2.5rem);
+}
+
+@utility stripes-thin {
+  background-image: repeating-linear-gradient(90deg, var(--color-popcorn) 0 0.5rem, #ffffff 0.5rem 1rem);
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  padding-inline: 1rem;
+  @media (width >= 48rem) {
+    padding-inline: 2.5rem;
+  }
+  @media (width >= 96rem) {
+    padding-inline: 4rem;
+  }
+}
+
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-popcorn);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-bg);
+    background-image:
+      radial-gradient(50rem 30rem at 100% 0%, rgb(242 193 78 / 0.18), transparent 70%),
+      radial-gradient(40rem 30rem at 0% 40%, rgb(233 211 166 / 0.45), transparent 70%);
+    background-attachment: fixed;
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-popcorn);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Bebas Neue is a tall, all-caps poster face: big headings only. */
+  h1, h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
