@@ -1,3 +1,12 @@
 allowBuilds:
   esbuild: true
   unrs-resolver: true
+
+# Nuxt pins @nuxt/devtools 3.4.2, which pulls a vulnerable simple-git; 3.4.3 drops it.
+minimumReleaseAgeExclude:
+  - '@nuxt/devtools-kit@3.4.3'
+  - '@nuxt/devtools-wizard@3.4.3'
+  - '@nuxt/devtools@3.4.3'
+
+overrides:
+  '@nuxt/devtools': ^3.4.3
