@@ -1,12 +1,15 @@
 allowBuilds:
   esbuild: true
   unrs-resolver: true
+  # Its postinstall only switches between Vue 2 and 3 builds; the default already targets Vue 3.
+  vue-demi: false
 
 # Nuxt pins @nuxt/devtools 3.4.2, which pulls a vulnerable simple-git; 3.4.3 drops it.
+overrides:
+  '@nuxt/devtools': ^3.4.3
+
+# @nuxt/devtools 3.4.3 is newer than pnpm's minimum release age.
 minimumReleaseAgeExclude:
   - '@nuxt/devtools-kit@3.4.3'
   - '@nuxt/devtools-wizard@3.4.3'
   - '@nuxt/devtools@3.4.3'
-
-overrides:
-  '@nuxt/devtools': ^3.4.3

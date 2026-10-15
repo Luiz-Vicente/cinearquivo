@@ -129,5 +129,28 @@
     "notFound": "Página não encontrada",
     "generic": "Tente novamente em instantes.",
     "home": "Voltar ao início"
+  },
+  "feedback": {
+    "open": "Sugestões",
+    "title": "Mande sua sugestão",
+    "description": "Ideias, problemas ou algo que você gostaria de ver por aqui? Conta pra gente. Deixe seu e-mail se quiser resposta.",
+    "typeLabel": "Tipo de mensagem",
+    "types": {
+      "suggestion": "Sugestão",
+      "bug": "Problema",
+      "content": "Pedido de filme",
+      "other": "Outro"
+    },
+    "messageLabel": "Mensagem",
+    "messagePlaceholder": "Escreva sua mensagem…",
+    "nameLabel": "Nome (opcional)",
+    "emailLabel": "E-mail (opcional)",
+    "send": "Enviar",
+    "sending": "Enviando…",
+    "sentTitle": "Obrigado!",
+    "sentText": "Sua mensagem foi enviada. Se deixou seu e-mail, podemos responder por lá.",
+    "sendAnother": "Enviar outra",
+    "error": "Não foi possível enviar agora. Tente de novo em instantes.",
+    "privacy": "Enviado por formsubmit.co."
   }
 }

@@ -129,5 +129,28 @@
     "notFound": "Page not found",
     "generic": "Please try again in a moment.",
     "home": "Back to home"
+  },
+  "feedback": {
+    "open": "Feedback",
+    "title": "Send us feedback",
+    "description": "Ideas, problems or something you would like to see here? Let us know. Leave your email if you would like a reply.",
+    "typeLabel": "Message type",
+    "types": {
+      "suggestion": "Suggestion",
+      "bug": "Problem",
+      "content": "Film request",
+      "other": "Other"
+    },
+    "messageLabel": "Message",
+    "messagePlaceholder": "Write your message…",
+    "nameLabel": "Name (optional)",
+    "emailLabel": "Email (optional)",
+    "send": "Send",
+    "sending": "Sending…",
+    "sentTitle": "Thank you!",
+    "sentText": "Your message was sent. If you left your email, we can reply there.",
+    "sendAnother": "Send another",
+    "error": "Could not send right now. Please try again in a moment.",
+    "privacy": "Sent through formsubmit.co."
   }
 }

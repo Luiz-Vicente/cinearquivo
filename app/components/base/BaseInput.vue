@@ -1,4 +1,6 @@
 <script setup lang="ts">
+defineOptions({ inheritAttrs: false })
+
 const model = defineModel<string>({ default: '' })
 
 defineProps<{
@@ -13,11 +15,21 @@ defineProps<{
 const { t } = useI18n()
 const input = useTemplateRef('input')
 
+// Native attributes (required, name, autocomplete…) belong on the <input>; classes on the wrapper.
+const attrs = useAttrs()
+const inputAttrs = computed(() => {
+  const { class: _class, style: _style, ...rest } = attrs
+  return rest
+})
+
 defineExpose({ focus: () => input.value?.focus() })
 </script>
 
 <template>
-  <label class="group relative flex h-11 w-full items-center gap-2 rounded-full bg-surface px-4 ring-1 ring-border-strong transition ring-inset focus-within:bg-surface-raised focus-within:ring-accent">
+  <label
+    :class="attrs.class"
+    class="group relative flex h-11 w-full items-center gap-2 rounded-full bg-surface px-4 ring-1 ring-border-strong transition ring-inset focus-within:bg-surface-raised focus-within:ring-accent"
+  >
     <span class="sr-only">{{ label }}</span>
     <BaseIcon
       v-if="icon"
@@ -27,6 +39,7 @@ defineExpose({ focus: () => input.value?.focus() })
     <input
       ref="input"
       v-model="model"
+      v-bind="inputAttrs"
       :type="type ?? 'text'"
       :placeholder="placeholder"
       :autofocus="autofocus"

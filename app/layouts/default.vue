@@ -6,6 +6,7 @@
     </main>
     <AppFooter class="mb-16 md:mb-0" />
     <AppBottomNav />
+    <FeedbackButton />
     <MovieDetailsModal />
   </div>
 </template>

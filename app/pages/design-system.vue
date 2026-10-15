@@ -16,6 +16,7 @@ const buttonVariants = ['primary', 'secondary', 'outline', 'ghost'] as const
 const buttonSizes = ['sm', 'md', 'lg'] as const
 
 const text = ref('')
+const message = ref('')
 const select = ref(1)
 const tab = ref<'a' | 'b' | 'c'>('a')
 const chip = ref(1)
@@ -176,6 +177,12 @@ const sample: MovieSummary = {
           :tabs="[{ value: 'a', label: 'One' }, { value: 'b', label: 'Two' }, { value: 'c', label: 'Three' }]"
         />
       </div>
+      <BaseTextarea
+        v-model="message"
+        label="Message"
+        placeholder="Write a message…"
+        class="max-w-2xl"
+      />
     </section>
 
     <section class="space-y-4">

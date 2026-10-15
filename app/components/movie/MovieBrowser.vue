@@ -33,12 +33,14 @@ const sort = computed<MovieSort>({
 const { data: facets } = useFacets(() => props.kind, () => props.lusophone)
 const sortOptions = computed(() => MOVIE_SORTS.map(value => ({ value, label: t(`sort.${value}`) })))
 
+// Select options can't be empty strings, so "all" stands for no filter.
+const ALL_COUNTRIES = 'all'
 const country = computed<string>({
-  get: () => typeof route.query.country === 'string' ? route.query.country : '',
-  set: value => router.replace({ query: { ...route.query, country: value || undefined } }),
+  get: () => typeof route.query.country === 'string' ? route.query.country : ALL_COUNTRIES,
+  set: value => router.replace({ query: { ...route.query, country: value === ALL_COUNTRIES ? undefined : value } }),
 })
 const countryOptions = computed(() => [
-  { value: '', label: t('catalog.allCountries') },
+  { value: ALL_COUNTRIES, label: t('catalog.allCountries') },
   ...(facets.value?.countries ?? [])
     .map(entry => ({ value: entry.code, label: countryName(entry.code, locale.value) }))
     .sort((a, b) => a.label.localeCompare(b.label, locale.value)),
@@ -48,7 +50,7 @@ const movies = useMovieList(() => ({
   kind: props.kind,
   genre: selectedGenre.value ?? undefined,
   decade: props.decade ?? selectedDecade.value ?? undefined,
-  country: props.lusophone ? undefined : country.value || undefined,
+  country: props.lusophone || country.value === ALL_COUNTRIES ? undefined : country.value,
   lusophone: props.lusophone || undefined,
   sort: sort.value,
 }))

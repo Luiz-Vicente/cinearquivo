@@ -1,7 +1,11 @@
 <script setup lang="ts">
 const open = defineModel<boolean>('open', { required: true })
 
-defineProps<{ label: string }>()
+withDefaults(defineProps<{
+  label: string
+  /** `sm` fits forms and short dialogs; `lg` fits rich content like title details. */
+  size?: 'sm' | 'lg'
+}>(), { size: 'lg' })
 
 const { t } = useI18n()
 const panel = useTemplateRef('panel')
@@ -21,7 +25,9 @@ watch(open, async (isOpen) => {
   }
 }, { flush: 'post', immediate: true })
 
-onKeyStroke('Escape', () => {
+onKeyStroke('Escape', (event) => {
+  // Escape inside an open listbox (BaseSelect) only closes that list.
+  if ((event.target as Element | null)?.closest?.('[role="listbox"]')) return
   if (open.value) open.value = false
 })
 
@@ -29,7 +35,7 @@ onKeyStroke('Escape', () => {
 function trapFocus(event: KeyboardEvent) {
   if (event.key !== 'Tab' || !panel.value) return
   const focusable = panel.value.querySelectorAll<HTMLElement>(
-    'a[href], button:not([disabled]), select, input, iframe, [tabindex]:not([tabindex="-1"])',
+    'a[href], button:not([disabled]), select, input, textarea, iframe, [tabindex]:not([tabindex="-1"])',
   )
   const first = focusable[0]
   const last = focusable[focusable.length - 1]
@@ -70,7 +76,8 @@ onBeforeUnmount(() => (bodyLock.value = false))
             aria-modal="true"
             :aria-label="label"
             tabindex="-1"
-            class="relative w-full max-w-4xl animate-rise-in overflow-hidden bg-surface shadow-card ring-1 ring-border outline-none sm:rounded-3xl"
+            class="relative w-full animate-rise-in overflow-hidden bg-surface shadow-card ring-1 ring-border outline-none sm:rounded-3xl"
+            :class="size === 'sm' ? 'max-w-lg sm:mt-[10vh]' : 'max-w-4xl'"
             @keydown="trapFocus"
           >
             <div class="absolute top-4 right-4 z-20">
