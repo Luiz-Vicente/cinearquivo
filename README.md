@@ -30,8 +30,9 @@ pnpm dev               # http://localhost:3000
 1. **Wikidata says it is public domain** (P6216) and links an Internet Archive item (P724), plus a TMDB id (P4947) or an IMDb id (P345).
 2. **Public domain by age:** Wikidata links an Internet Archive item and a TMDB id, and the film was published 96 or more years ago (US rule: 95 years after publication).
 3. **Public domain by age, found on the Internet Archive:** an item in a film collection matches a TMDB movie by exact title, year and runtime, and TMDB dates the release old enough.
+4. **Brazilian and Portuguese films:** same as 3, but searched by language and subject across the whole Internet Archive, since they rarely sit in the big film collections.
 
-Anything Wikidata marks as copyrighted is dropped. Every film also needs a browser-playable MP4 whose length matches the TMDB runtime, so trailers and partial uploads stay out. Responses are cached in `.cache/catalog`, so reruns are quick; use `pnpm catalog --fresh` to start over. The age rule moves forward every January 1st, so rerunning the script each year brings in a new batch of films.
+Anything Wikidata marks as copyrighted is dropped, and a public domain mark limited to another country doesn't count. Every film needs a browser-playable MP4 that isn't a modern disc or web rip, nor a dubbed, subtitled or colorized version (those add new copyrighted work). Its length must match the TMDB runtime, so trailers and partial uploads stay out. When the film's identity is certain (Wikidata or an exact Portuguese title match), a surviving fragment is accepted and flagged as such. Responses are cached in `.cache/catalog`, so reruns are quick; use `pnpm catalog --fresh` to start over. The age rule moves forward every January 1st, so rerunning the script each year brings in a new batch of films.
 
 ## Project structure
 
@@ -42,7 +43,7 @@ app/
   components/movie/       Domain components built on the design system
   components/layout/      Header, bottom nav, footer, logo, language switcher
   composables/            Catalog API, My List, Continue Watching, details modal
-  pages/                  Home, features, shorts, decades, search, my list, movie, watch, design-system
+  pages/                  Home, features, shorts, decades, Portuguese-language, search, my list, movie, watch, design-system
 server/
   data/                   Generated catalog
   utils/catalog.ts        In-memory catalog: filters, search, facets, similar films

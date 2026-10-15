@@ -10,9 +10,14 @@
  *    PUBLIC_DOMAIN_YEAR: public domain in the US by age (95 years after publication).
  * 3. An Internet Archive film collection item matches a TMDB movie by exact title, year and
  *    runtime, and TMDB dates the release up to PUBLIC_DOMAIN_YEAR.
+ * 4. Same as 3 for Brazilian and Portuguese films, found by language and subject anywhere on the
+ *    Internet Archive (they rarely sit in the big film collections).
  * Anything Wikidata marks as copyrighted is dropped, and a public domain mark limited to another
- * country doesn't count. Each film also needs a browser-playable MP4 whose length matches the
- * TMDB runtime (so trailers and partial uploads are skipped) that isn't a modern disc or web rip.
+ * country doesn't count. Each film also needs a browser-playable MP4 that isn't a modern disc or
+ * web rip, nor a dubbed, subtitled or colorized version (those add new copyrighted work). Its
+ * length must match the TMDB runtime, so trailers and partial uploads are skipped; when the
+ * film's identity is certain (Wikidata or an exact Portuguese title match), a surviving fragment
+ * is accepted and flagged as partial.
  *
  * Run with `pnpm catalog` (needs NUXT_TMDB_TOKEN). Responses are cached in `.cache/catalog`,
  * so reruns are fast; pass `--fresh` to start over.
@@ -27,10 +32,16 @@ const LOCALES = { 'pt-BR': { language: 'pt', region: 'BR' }, 'en': { language: '
 const SHORT_MAX_MINUTES = 40
 const MIN_DURATION = 60
 const RUNTIME_TOLERANCE = 0.4
+/** Very short films get at least this much slack (minutes), since speeds vary between copies. */
+const RUNTIME_SLACK = 2
+/** A fragment must keep at least this share of the film to be worth showing. */
+const MIN_FRAGMENT_SHARE = 0.15
 const CONCURRENCY = 8
 const CAST_SIZE = 8
 const VIDEO_FORMATS = new Set(['h.264', 'h.264 HD', 'h.264 IA', 'MPEG4', '512Kb MPEG4'])
 // Modern disc and web rips can carry newly recorded scores or restorations with their own rights.
+// Dubs, translated subtitles and colorization are new works with their own rights.
+const DERIVATIVE_PATTERN = /dublad|legendad|dubbed|subtitled|\bsubs?\b|colori[zds]|colorid/i
 const RIP_PATTERN = /bd-?rip|blu-?ray|remux|web-?dl|web-?rip|hdrip|x26[45]|criterion|kino[\s._-]?lorber|masters[\s._-]?of[\s._-]?cinema|yify|yts|sadpanda|\bptp_/i
 const ARCHIVE_COLLECTIONS = ['silent_films', 'feature_films', 'classic_cartoons', 'Comedy_Films', 'Film_Noir', 'SciFi_Horror', 'moviesandfilms']
 const USER_AGENT = 'CineArquivo-catalog/1.0 (personal, non-commercial project)'
@@ -134,9 +145,19 @@ function normalize(title) {
     .replace(/[^a-z0-9]/g, '')
 }
 
-/** "Nosferatu (1922) [HD]" → "Nosferatu" */
+/**
+ * "Nosferatu (1922) [HD]" → "Nosferatu", "1930 - Lábios sem beijos" → "Lábios sem beijos",
+ * "Segredo do corcunda, O (Alberto Traversa, 1924)" → "O Segredo do corcunda"
+ */
 function cleanTitle(title) {
-  return title.replace(/[([{].*?[)\]}]/g, '').replace(/\s+/g, ' ').trim()
+  const clean = title
+    .replace(/[([{].*?[)\]}]/g, '')
+    .replace(/^\d{4}\s*[-–]\s*/, '')
+    .replace(/\s*[-–]\s*(segundo\s+|primeiro\s+)?fragmento.*$/i, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+  const article = /^(.+),\s*(o|a|os|as|the)$/i.exec(clean)
+  return article ? `${article[2]} ${article[1]}` : clean
 }
 
 const yearOf = date => Number(String(date ?? '').slice(0, 4)) || null
@@ -180,9 +201,15 @@ for (const row of await wikidata(QUERIES.byAge)) {
 }
 console.log(`+ wikidata by age: ${candidates.size}`)
 
-async function archiveSearch() {
+const LUSOPHONE_FILTER = [
+  'language:(por OR portuguese OR "português" OR portugues)',
+  'subject:(brasil OR brazil OR brasileiro OR "cinema brasileiro" OR "brazilian cinema" OR portugal OR "cinema português" OR "cinema portugues")',
+  'title:(BRA OR POR)',
+].join(' OR ')
+
+async function archiveSearch(filter) {
   const params = new URLSearchParams({
-    q: `mediatype:movies AND collection:(${ARCHIVE_COLLECTIONS.join(' OR ')}) AND year:[1880 TO ${PUBLIC_DOMAIN_YEAR}]`,
+    q: `mediatype:movies AND (${filter}) AND year:[1880 TO ${PUBLIC_DOMAIN_YEAR}]`,
     rows: '20000',
     output: 'json',
   })
@@ -193,8 +220,10 @@ async function archiveSearch() {
 }
 
 /** Exact title + year match on TMDB, only for releases old enough to be public domain. */
-async function matchArchiveItem(doc) {
-  const title = cleanTitle(String(Array.isArray(doc.title) ? doc.title[0] : doc.title ?? ''))
+async function matchArchiveItem(doc, source) {
+  const rawTitle = String(Array.isArray(doc.title) ? doc.title[0] : doc.title ?? '')
+  if (DERIVATIVE_PATTERN.test(rawTitle)) return
+  const title = cleanTitle(rawTitle)
   const year = yearOf(doc.year)
   if (!title || !year || year > PUBLIC_DOMAIN_YEAR) return
   const wanted = normalize(title)
@@ -206,13 +235,18 @@ async function matchArchiveItem(doc) {
     const sameTitle = normalize(result.title) === wanted || normalize(result.original_title ?? '') === wanted
     return sameTitle && released && released <= PUBLIC_DOMAIN_YEAR && Math.abs(released - year) <= 1
   })
-  if (movie) addCandidate(movie.id, [doc.identifier], 'archive-age')
+  if (movie) addCandidate(movie.id, [doc.identifier], source)
 }
 
-const archiveDocs = await archiveSearch()
+const archiveDocs = await archiveSearch(`collection:(${ARCHIVE_COLLECTIONS.join(' OR ')})`)
 console.log(`internet archive items up to ${PUBLIC_DOMAIN_YEAR}: ${archiveDocs.length}`)
-await mapLimit(archiveDocs, matchArchiveItem, 'archive match')
+await mapLimit(archiveDocs, doc => matchArchiveItem(doc, 'archive-age'), 'archive match')
 console.log(`+ internet archive by age: ${candidates.size}`)
+
+const lusophoneDocs = await archiveSearch(LUSOPHONE_FILTER)
+console.log(`brazilian and portuguese items up to ${PUBLIC_DOMAIN_YEAR}: ${lusophoneDocs.length}`)
+await mapLimit(lusophoneDocs, doc => matchArchiveItem(doc, 'archive-lusophone'), 'lusophone match')
+console.log(`+ brazilian and portuguese: ${candidates.size}`)
 
 // ---------------------------------------------------------------- details
 
@@ -257,23 +291,39 @@ async function buildEntry([tmdbId, { items, sources }]) {
   if (sources.size === 1 && sources.has('archive-age') && !movie.runtime) return null
 
   const matchesRuntime = duration => movie.runtime
-    ? Math.abs(duration / 60 - movie.runtime) <= movie.runtime * RUNTIME_TOLERANCE
+    ? Math.abs(duration / 60 - movie.runtime) <= Math.max(movie.runtime * RUNTIME_TOLERANCE, RUNTIME_SLACK)
+    && duration >= movie.runtime * 60 / 2
     : duration >= MIN_DURATION
 
-  const videos = (await Promise.all([...items].map(item => archiveVideos(item).catch(() => []))))
+  const playable = (await Promise.all([...items].map(item => archiveVideos(item).catch(() => []))))
     .flat()
-    .filter(video => matchesRuntime(video.duration) && !RIP_PATTERN.test(`${video.identifier} ${video.file}`))
+    .filter(video => !RIP_PATTERN.test(`${video.identifier} ${video.file}`) && !DERIVATIVE_PATTERN.test(video.file))
+  const complete = playable
+    .filter(video => matchesRuntime(video.duration))
     .sort((a, b) => b.height - a.height || b.duration - a.duration)
-  const video = videos[0]
+
+  // Many silent films only survive in fragments; show them when we know which film it is.
+  const identityKnown = !(sources.size === 1 && sources.has('archive-age'))
+  const fragments = identityKnown && movie.runtime
+    ? playable
+        // Longer than the film is a compilation or another cut, not a fragment.
+        .filter(video => video.duration >= Math.max(MIN_DURATION, movie.runtime * 60 * MIN_FRAGMENT_SHARE)
+          && video.duration < movie.runtime * 60)
+        .sort((a, b) => b.duration - a.duration || b.height - a.height)
+    : []
+  const video = complete[0] ?? fragments[0]
   if (!video) return null
+  const partial = !complete.length
 
   const runtime = movie.runtime || Math.round(video.duration / 60)
   const english = { title: movie.title, overview: movie.overview, tagline: movie.tagline || '' }
   const text = Object.fromEntries(Object.entries(LOCALES).map(([locale, info]) => {
     if (locale === 'en') return [locale, english]
     const data = translation(movie, info)
+    // A film already in this language needs no translation: keep its own title.
+    const ownTitle = movie.original_language === info.language ? movie.original_title : ''
     return [locale, {
-      title: data.title || english.title,
+      title: data.title || ownTitle || english.title,
       overview: data.overview || english.overview,
       tagline: data.tagline || '',
     }]
@@ -295,15 +345,19 @@ async function buildEntry([tmdbId, { items, sources }]) {
     logos: { 'pt-BR': pickLogo(movie, 'pt'), 'en': pickLogo(movie, 'en') },
     directors: (movie.credits?.crew ?? []).filter(person => person.job === 'Director').map(person => person.name),
     cast: (movie.credits?.cast ?? []).slice(0, CAST_SIZE).map(person => person.name),
+    countries: (movie.production_countries ?? []).map(country => country.iso_3166_1),
     text,
     video,
+    partial,
     sources: [...sources].sort(),
   }
 }
 
 const entries = await mapLimit([...candidates], buildEntry, 'details')
+const isLusophone = entry => entry.countries.some(country => country === 'BR' || country === 'PT') || entry.originalLanguage === 'pt'
+// Films without any artwork make poor cards; Brazilian and Portuguese ones are rare enough to keep anyway.
 const catalog = entries
-  .filter(entry => entry && (entry.posterPath || entry.backdropPath))
+  .filter(entry => entry && (entry.posterPath || entry.backdropPath || isLusophone(entry)))
   .sort((a, b) => b.votes - a.votes || a.id - b.id)
 
 const usedGenres = new Set(catalog.flatMap(entry => entry.genreIds))
@@ -316,6 +370,7 @@ await writeFile(new URL('../server/data/genres.json', import.meta.url), `${JSON.
 
 const count = predicate => catalog.filter(predicate).length
 console.log(`\n${catalog.length} films: ${count(e => e.kind === 'feature')} features, ${count(e => e.kind === 'short')} shorts`)
-for (const source of ['wikidata-pd', 'wikidata-age', 'archive-age']) {
+console.log(`  partial copies: ${count(e => e.partial)}, brazilian or portuguese: ${count(isLusophone)}`)
+for (const source of ['wikidata-pd', 'wikidata-age', 'archive-age', 'archive-lusophone']) {
   console.log(`  via ${source}: ${count(e => e.sources.includes(source))} (only: ${count(e => e.sources.length === 1 && e.sources[0] === source)})`)
 }
