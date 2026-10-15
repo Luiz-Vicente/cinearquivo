@@ -150,5 +150,17 @@
     "sentTitle": "Obrigado!",
     "sentText": "Sua mensagem foi enviada. Se deixou seu e-mail, podemos responder por lá.",
     "sendAnother": "Enviar outra"
+  },
+  "support": {
+    "open": "Apoiar",
+    "title": "Ajude o projeto a ficar de pé",
+    "text": "O CineArquivo é gratuito, sem anúncios e feito por uma pessoa só. Qualquer valor via Pix ajuda a manter os clássicos no ar e o projeto crescendo.",
+    "scan": "Escaneie o QR Code no app do seu banco",
+    "or": "ou use o Pix Copia e Cola",
+    "copy": "Copiar código Pix",
+    "copied": "Código copiado!",
+    "recipient": "Pix para {name}",
+    "qrAlt": "QR Code Pix para apoiar o CineArquivo",
+    "footer": "Apoie com Pix"
   }
 }

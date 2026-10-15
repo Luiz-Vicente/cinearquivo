@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const support = useSupportModal()
 const year = new Date().getFullYear()
 </script>
 
@@ -14,6 +15,14 @@ const year = new Date().getFullYear()
         <div class="max-w-sm space-y-3">
           <AppLogo variant="full" />
           <p>{{ t('brand.tagline') }}</p>
+          <button
+            type="button"
+            class="inline-flex items-center gap-2 font-semibold text-accent hover:text-accent-hover hover:underline"
+            @click="support.show()"
+          >
+            <BaseIcon name="heart-handshake" />
+            {{ t('support.footer') }}
+          </button>
         </div>
         <div class="grid max-w-xl gap-6 sm:grid-cols-2">
           <div class="space-y-1.5">

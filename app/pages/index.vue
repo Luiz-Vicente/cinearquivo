@@ -58,14 +58,18 @@ function rowKey(row: HomeRow): string {
         :items="myListItems"
         to="/my-list"
       />
-      <MovieRow
+      <template
         v-for="(row, index) in feed?.rows"
         :key="rowKey(row)"
-        :title="rowTitle(row)"
-        :items="row.items"
-        :variant="index === 0 ? 'backdrop' : 'poster'"
-        :to="rowLink(row)"
-      />
+      >
+        <MovieRow
+          :title="rowTitle(row)"
+          :items="row.items"
+          :variant="index === 0 ? 'backdrop' : 'poster'"
+          :to="rowLink(row)"
+        />
+        <SupportBanner v-if="index === 1" />
+      </template>
     </div>
   </div>
 </template>

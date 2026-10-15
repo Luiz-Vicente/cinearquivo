@@ -8,5 +8,6 @@
     <AppBottomNav />
     <FeedbackButton />
     <MovieDetailsModal />
+    <SupportModal />
   </div>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const support = useSupportModal()
 const { y } = useWindowScroll()
 const scrolled = computed(() => y.value > 24)
 const links = NAV_ITEMS.filter(item => !item.mobileOnly)
@@ -47,6 +48,19 @@ const links = NAV_ITEMS.filter(item => !item.mobileOnly)
           icon-only
           :label="t('nav.search')"
           class="max-md:hidden"
+        />
+        <BaseButton
+          icon="heart-handshake"
+          :label="t('support.open')"
+          size="sm"
+          class="md:hidden"
+          @click="support.show()"
+        />
+        <BaseButton
+          icon="heart-handshake"
+          :label="t('support.open')"
+          class="max-md:hidden"
+          @click="support.show()"
         />
         <LanguageSwitcher />
       </div>
