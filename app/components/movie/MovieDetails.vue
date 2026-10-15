@@ -115,6 +115,16 @@ if (props.page) {
         <p class="leading-relaxed text-text">
           {{ movie.overview || t('details.noOverview') }}
         </p>
+        <p
+          v-if="movie.partial"
+          class="flex items-start gap-2 rounded-xl bg-surface-sunken p-3 text-sm text-text-muted"
+        >
+          <BaseIcon
+            name="scissors"
+            class="mt-0.5 shrink-0 text-accent"
+          />
+          {{ t('details.partial', { minutes: Math.max(1, Math.round(movie.video.duration / 60)), runtime: movie.runtime }) }}
+        </p>
       </div>
       <dl class="space-y-4 text-sm">
         <div

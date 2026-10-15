@@ -31,6 +31,7 @@ const sample: MovieSummary = {
   rating: 8.1,
   posterPath: null,
   backdropPath: null,
+  partial: false,
   progress: 0.4,
 }
 </script>

@@ -36,7 +36,8 @@
     "myList": "My list",
     "featured": "Famous classics",
     "shorts": "Short films",
-    "decade": "The {decade}s"
+    "decade": "The {decade}s",
+    "portuguese": "Portuguese-language cinema"
   },
   "meta": {
     "rating": "Rated {score} out of 10",
@@ -44,7 +45,8 @@
     "publicDomain": "Public domain",
     "decade": "The {decade}s",
     "directedBy": "Directed by {name}",
-    "watched": "{percent}% watched"
+    "watched": "{percent}% watched",
+    "partial": "Fragment"
   },
   "sort": {
     "popular": "Best known",
@@ -66,7 +68,11 @@
     "sortBy": "Sort by",
     "count": "{n} film | {n} films",
     "empty": "No films match these filters",
-    "emptyHint": "Try another genre or decade."
+    "emptyHint": "Try another genre or decade.",
+    "portugueseTitle": "Portuguese-language cinema",
+    "portugueseDescription": "Brazilian and Portuguese films from the silent era and early talkies: Humberto Mauro, José Medina, Leitão de Barros and other rarities.",
+    "country": "Country",
+    "allCountries": "All countries"
   },
   "decades": {
     "d1890": "Cinema's first steps: the Lumière brothers and the first screenings.",
@@ -87,7 +93,8 @@
     "source": "Source",
     "similar": "You may also like",
     "noOverview": "No synopsis available.",
-    "notFound": "Film not found."
+    "notFound": "Film not found.",
+    "partial": "Only part of this film survives: this copy runs {minutes} min of the original {runtime} min."
   },
   "search": {
     "title": "Search",

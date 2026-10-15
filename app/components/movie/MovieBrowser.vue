@@ -8,9 +8,11 @@ const props = defineProps<{
   kind?: MovieKind
   /** Fixed decade (decade pages); otherwise the viewer can pick one. */
   decade?: number
+  /** Only Brazilian and Portuguese films (the Portuguese-language page). */
+  lusophone?: boolean
 }>()
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -28,13 +30,26 @@ const sort = computed<MovieSort>({
   set: value => router.replace({ query: { ...route.query, sort: value === 'popular' ? undefined : value } }),
 })
 
-const { data: facets } = useFacets(() => props.kind)
+const { data: facets } = useFacets(() => props.kind, () => props.lusophone)
 const sortOptions = computed(() => MOVIE_SORTS.map(value => ({ value, label: t(`sort.${value}`) })))
+
+const country = computed<string>({
+  get: () => typeof route.query.country === 'string' ? route.query.country : '',
+  set: value => router.replace({ query: { ...route.query, country: value || undefined } }),
+})
+const countryOptions = computed(() => [
+  { value: '', label: t('catalog.allCountries') },
+  ...(facets.value?.countries ?? [])
+    .map(entry => ({ value: entry.code, label: countryName(entry.code, locale.value) }))
+    .sort((a, b) => a.label.localeCompare(b.label, locale.value)),
+])
 
 const movies = useMovieList(() => ({
   kind: props.kind,
   genre: selectedGenre.value ?? undefined,
   decade: props.decade ?? selectedDecade.value ?? undefined,
+  country: props.lusophone ? undefined : country.value || undefined,
+  lusophone: props.lusophone || undefined,
   sort: sort.value,
 }))
 </script>
@@ -54,7 +69,14 @@ const movies = useMovieList(() => ({
           {{ description }}
         </p>
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex flex-wrap items-center gap-3">
+        <BaseSelect
+          v-if="!lusophone && countryOptions.length > 2"
+          v-model="country"
+          :options="countryOptions"
+          :label="t('catalog.country')"
+          icon="globe"
+        />
         <span
           v-if="movies.total.value"
           class="text-sm text-text-muted"

@@ -14,10 +14,13 @@ function text(value: unknown, maxLength: number): string | undefined {
 export function readMovieQuery(event: H3Event): MovieQuery {
   const query = getQuery(event)
   const ids = text(query.ids, 2000)
+  const country = text(query.country, 200)?.toUpperCase()
   return {
     kind: query.kind === 'feature' || query.kind === 'short' ? query.kind as MovieKind : undefined,
     genre: positiveInt(query.genre),
     decade: positiveInt(query.decade),
+    country: country && /^[A-Z]{2}(,[A-Z]{2})*$/.test(country) ? country : undefined,
+    lusophone: query.lusophone === '1' || query.lusophone === 'true' || undefined,
     q: text(query.q, 100),
     sort: isMovieSort(query.sort) ? query.sort : undefined,
     ids: ids && /^\d+(,\d+)*$/.test(ids) ? ids : undefined,

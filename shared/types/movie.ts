@@ -14,6 +14,8 @@ export interface MovieSummary {
   rating: number
   posterPath: string | null
   backdropPath: string | null
+  /** Only a fragment of the film survives (or is on the Internet Archive). */
+  partial: boolean
   /** Watched fraction (0–1), added on the client for Continue Watching. */
   progress?: number
 }
@@ -55,6 +57,10 @@ export interface MovieQuery {
   kind?: MovieKind
   genre?: number
   decade?: number
+  /** Comma-separated ISO 3166-1 codes of production countries. */
+  country?: string
+  /** Brazilian or Portuguese productions, or spoken in Portuguese. */
+  lusophone?: boolean
   q?: string
   sort?: MovieSort
   /** Comma-separated ids, returned in that order (My List, Continue Watching). */
@@ -64,7 +70,7 @@ export interface MovieQuery {
 }
 
 export type HomeRow
-  = | { type: 'featured' | 'shorts', items: MovieSummary[] }
+  = | { type: 'featured' | 'shorts' | 'portuguese', items: MovieSummary[] }
     | { type: 'decade', decade: number, items: MovieSummary[] }
     | { type: 'genre', genre: Genre, items: MovieSummary[] }
 
@@ -76,6 +82,8 @@ export interface HomeFeed {
 export interface Facets {
   genres: (Genre & { count: number })[]
   decades: { decade: number, count: number }[]
+  /** ISO 3166-1 codes, most films first. */
+  countries: { code: string, count: number }[]
 }
 
 export interface PlaybackPosition {

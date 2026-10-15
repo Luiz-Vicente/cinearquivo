@@ -22,6 +22,7 @@ function rowTitle(row: HomeRow): string {
 function rowLink(row: HomeRow): RouteLocationRaw {
   if (row.type === 'decade') return `/decades/${row.decade}`
   if (row.type === 'genre') return { path: '/movies', query: { genre: row.genre.id } }
+  if (row.type === 'portuguese') return '/portuguese'
   return row.type === 'shorts' ? '/shorts' : '/movies'
 }
 

@@ -19,6 +19,7 @@ export default defineEventHandler((event): HomeFeed => {
   const genreNames = new Map(genreList(locale).map(genre => [genre.id, genre]))
   const rows: HomeRow[] = [
     { type: 'featured', items: summaries(features) },
+    { type: 'portuguese', items: summaries(catalog.filter(isLusophone)) },
     { type: 'shorts', items: summaries(catalog.filter(entry => entry.kind === 'short')) },
     ...DECADES.map(decade => ({
       type: 'decade' as const,

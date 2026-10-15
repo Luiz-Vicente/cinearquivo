@@ -36,7 +36,8 @@
     "myList": "Minha lista",
     "featured": "Clássicos famosos",
     "shorts": "Curtas-metragens",
-    "decade": "Anos {decade}"
+    "decade": "Anos {decade}",
+    "portuguese": "Cinema em português"
   },
   "meta": {
     "rating": "Nota {score} de 10",
@@ -44,7 +45,8 @@
     "publicDomain": "Domínio público",
     "decade": "Anos {decade}",
     "directedBy": "Direção de {name}",
-    "watched": "{percent}% assistido"
+    "watched": "{percent}% assistido",
+    "partial": "Fragmento"
   },
   "sort": {
     "popular": "Mais conhecidos",
@@ -66,7 +68,11 @@
     "sortBy": "Ordenar por",
     "count": "{n} filme | {n} filmes",
     "empty": "Nenhum filme com esses filtros",
-    "emptyHint": "Tente outro gênero ou década."
+    "emptyHint": "Tente outro gênero ou década.",
+    "portugueseTitle": "Cinema em português",
+    "portugueseDescription": "Filmes brasileiros e portugueses do cinema mudo e do começo do cinema falado: Humberto Mauro, José Medina, Leitão de Barros e outras raridades.",
+    "country": "País",
+    "allCountries": "Todos os países"
   },
   "decades": {
     "d1890": "Os primeiros passos do cinema: os irmãos Lumière e as primeiras exibições.",
@@ -87,7 +93,8 @@
     "source": "Fonte",
     "similar": "Você também pode gostar",
     "noOverview": "Sinopse indisponível.",
-    "notFound": "Filme não encontrado."
+    "notFound": "Filme não encontrado.",
+    "partial": "Só sobreviveu parte deste filme: a cópia tem {minutes} min de {runtime} min originais."
   },
   "search": {
     "title": "Buscar",

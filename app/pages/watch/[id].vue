@@ -90,7 +90,7 @@ useSeoMeta({
           v-if="movie"
           class="mt-1 text-xs text-on-player/70"
         >
-          {{ [movie.year, formatRuntime(movie.runtime)].filter(Boolean).join(' · ') }} ·
+          {{ [movie.year, formatRuntime(movie.runtime), movie.partial ? t('meta.partial') : null].filter(Boolean).join(' · ') }} ·
           <a
             :href="movie.video.pageUrl"
             target="_blank"

@@ -1,6 +1,6 @@
 import type { Facets, HomeFeed, MovieDetails, MovieKind, MovieQuery, MovieSummary, Paged } from '#shared/types/movie'
 
-type Query = Record<string, string | number | undefined>
+type Query = Record<string, string | number | boolean | undefined>
 
 /** Catalog API call in the current language; refetches when the language or query changes. */
 export function useCatalogFetch<T>(
@@ -19,8 +19,8 @@ export function useHomeFeed() {
   return useCatalogFetch<HomeFeed>('/api/home')
 }
 
-export function useFacets(kind: MaybeRefOrGetter<MovieKind | undefined>) {
-  return useCatalogFetch<Facets>('/api/facets', () => ({ kind: toValue(kind) }))
+export function useFacets(kind: MaybeRefOrGetter<MovieKind | undefined>, lusophone: MaybeRefOrGetter<boolean> = false) {
+  return useCatalogFetch<Facets>('/api/facets', () => ({ kind: toValue(kind), lusophone: toValue(lusophone) || undefined }))
 }
 
 export function useMovieDetails(id: MaybeRefOrGetter<number>, options: { lazy?: boolean } = {}) {

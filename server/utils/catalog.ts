@@ -25,8 +25,10 @@ export interface CatalogEntry {
   logos: Record<Locale, string | null>
   directors: string[]
   cast: string[]
+  countries: string[]
   text: Record<Locale, LocalizedText>
   video: { identifier: string, file: string, height: number, duration: number }
+  partial: boolean
   sources: string[]
 }
 
@@ -45,6 +47,10 @@ const searchIndex = new Map(catalog.map(entry => [
   entry.id,
   normalizeText([entry.originalTitle, ...LOCALES.map(locale => entry.text[locale].title), ...entry.directors].join(' ')),
 ]))
+
+export function isLusophone(entry: CatalogEntry): boolean {
+  return entry.originalLanguage === 'pt' || entry.countries.some(country => country === 'BR' || country === 'PT')
+}
 
 export function localeFrom(value: unknown): Locale {
   return isLocale(value) ? value : 'pt-BR'
@@ -70,6 +76,7 @@ export function toSummary(entry: CatalogEntry, locale: Locale): MovieSummary {
     rating: entry.rating,
     posterPath: entry.posterPath,
     backdropPath: entry.backdropPath,
+    partial: entry.partial,
   }
 }
 
@@ -121,10 +128,13 @@ export function queryMovies(query: MovieQuery): CatalogEntry[] {
   }
 
   const terms = query.q ? normalizeText(query.q).split(' ').filter(Boolean) : []
+  const countries = query.country?.split(',')
   const results = catalog.filter(entry =>
     (!query.kind || entry.kind === query.kind)
     && (!query.genre || entry.genreIds.includes(query.genre))
     && (!query.decade || decadeOf(entry.year) === query.decade)
+    && (!countries || entry.countries.some(country => countries.includes(country)))
+    && (!query.lusophone || isLusophone(entry))
     && (!terms.length || matchesSearch(entry, terms)))
 
   switch (query.sort) {
@@ -151,13 +161,15 @@ export function paginate(entries: CatalogEntry[], query: MovieQuery, locale: Loc
   }
 }
 
-/** Genres and decades that have films of the given kind. */
-export function facets(kind: MovieKind | undefined, locale: Locale): Facets {
-  const entries = kind ? catalog.filter(entry => entry.kind === kind) : catalog
+/** Genres, decades and countries that have films of the given kind. */
+export function facets(locale: Locale, kind?: MovieKind, lusophone?: boolean): Facets {
+  const entries = catalog.filter(entry => (!kind || entry.kind === kind) && (!lusophone || isLusophone(entry)))
   const genreCounts = new Map<number, number>()
   const decadeCounts = new Map<number, number>()
+  const countryCounts = new Map<string, number>()
   for (const entry of entries) {
     entry.genreIds.forEach(id => genreCounts.set(id, (genreCounts.get(id) ?? 0) + 1))
+    entry.countries.forEach(code => countryCounts.set(code, (countryCounts.get(code) ?? 0) + 1))
     const decade = decadeOf(entry.year)
     if (decade) decadeCounts.set(decade, (decadeCounts.get(decade) ?? 0) + 1)
   }
@@ -166,5 +178,6 @@ export function facets(kind: MovieKind | undefined, locale: Locale): Facets {
       .filter(genre => (genreCounts.get(genre.id) ?? 0) > 0)
       .map(genre => ({ ...genre, count: genreCounts.get(genre.id)! })),
     decades: [...decadeCounts].sort(([a], [b]) => a - b).map(([decade, count]) => ({ decade, count })),
+    countries: [...countryCounts].sort(([, a], [, b]) => b - a).map(([code, count]) => ({ code, count })),
   }
 }

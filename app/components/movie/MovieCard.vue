@@ -45,14 +45,21 @@ const image = computed(() => props.variant === 'poster'
       />
 
       <div
-        v-if="item.kind === 'short'"
-        class="pointer-events-none absolute top-2 left-2 z-[2]"
+        v-if="item.kind === 'short' || item.partial"
+        class="pointer-events-none absolute top-2 left-2 z-[2] flex flex-wrap gap-1"
       >
         <BaseBadge
+          v-if="item.kind === 'short'"
           variant="accent"
           icon="clapperboard"
         >
           {{ t('meta.short') }}
+        </BaseBadge>
+        <BaseBadge
+          v-if="item.partial"
+          icon="scissors"
+        >
+          {{ t('meta.partial') }}
         </BaseBadge>
       </div>
 
