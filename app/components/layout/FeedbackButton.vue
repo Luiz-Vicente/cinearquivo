@@ -193,10 +193,7 @@ async function submit() {
           {{ t('feedback.error') }}
         </p>
 
-        <div class="flex items-center justify-between gap-3 pt-1">
-          <p class="text-xs text-text-subtle">
-            {{ t('feedback.privacy') }}
-          </p>
+        <div class="flex justify-end pt-1">
           <BaseButton
             type="submit"
             icon="send"
