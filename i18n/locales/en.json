@@ -149,7 +149,6 @@
     "sending": "Sending…",
     "sentTitle": "Thank you!",
     "sentText": "Your message was sent. If you left your email, we can reply there.",
-    "sendAnother": "Send another",
-    "error": "Could not send right now. Please try again in a moment."
+    "sendAnother": "Send another"
   }
 }

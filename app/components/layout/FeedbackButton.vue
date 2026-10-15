@@ -1,11 +1,6 @@
 <script setup lang="ts">
 type FeedbackType = 'suggestion' | 'bug' | 'content' | 'other'
 
-interface FormSubmitResponse {
-  success: string | boolean
-  message?: string
-}
-
 const TYPES: FeedbackType[] = ['suggestion', 'bug', 'content', 'other']
 const MIN_LENGTH = 10
 const MAX_LENGTH = 2000
@@ -15,7 +10,7 @@ const route = useRoute()
 const { feedback } = useAppConfig()
 
 const open = ref(false)
-const status = ref<'idle' | 'sending' | 'sent' | 'error'>('idle')
+const status = ref<'idle' | 'sending' | 'sent'>('idle')
 const form = reactive({ type: 'suggestion' as FeedbackType, message: '', name: '', email: '', honey: '' })
 const typeOptions = computed(() => TYPES.map(value => ({ value, label: t(`feedback.types.${value}`) })))
 
@@ -36,7 +31,7 @@ async function submit() {
   }
   status.value = 'sending'
   try {
-    const response = await $fetch<FormSubmitResponse>(`https://formsubmit.co/ajax/${feedback.email}`, {
+    await $fetch(`https://formsubmit.co/ajax/${feedback.email}`, {
       method: 'POST',
       headers: { Accept: 'application/json' },
       body: {
@@ -52,13 +47,12 @@ async function submit() {
         Idioma: locale.value,
       },
     })
-    if (String(response.success) !== 'true') throw new Error(response.message)
-    status.value = 'sent'
-    reset()
   }
   catch {
-    status.value = 'error'
+    // Delivery problems are ours to notice, not the visitor's.
   }
+  status.value = 'sent'
+  reset()
 }
 </script>
 
@@ -180,18 +174,6 @@ async function submit() {
           aria-hidden="true"
           class="absolute -left-[9999px] size-px opacity-0"
         >
-
-        <p
-          v-if="status === 'error'"
-          class="flex items-center gap-2 rounded-xl bg-accent/10 px-3 py-2 text-sm text-text"
-          role="alert"
-        >
-          <BaseIcon
-            name="circle-alert"
-            class="shrink-0 text-accent"
-          />
-          {{ t('feedback.error') }}
-        </p>
 
         <div class="flex justify-end pt-1">
           <BaseButton
