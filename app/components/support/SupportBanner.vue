@@ -6,7 +6,7 @@
         class="stripes h-3"
         aria-hidden="true"
       />
-      <div class="grid items-center gap-8 p-6 md:grid-cols-[1fr_auto] md:gap-12 md:p-10">
+      <div class="grid items-center justify-center gap-8 p-6 md:grid-cols-[minmax(0,36rem)_auto] md:gap-16 md:p-10">
         <SupportIntro />
         <SupportPix />
       </div>
